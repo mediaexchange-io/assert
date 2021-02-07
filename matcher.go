@@ -125,22 +125,7 @@ func (m *Matcher) IsEqualTo(expected interface{}) *Matcher {
 			return m
 		}
 
-		switch ak {
-		case boolKind:
-			m.match = av.Bool() == ev.Bool()
-		case complexKind:
-			m.match = av.Complex() == ev.Complex()
-		case floatKind:
-			m.match = av.Float() == ev.Float()
-		case intKind:
-			m.match = av.Int() == ev.Int()
-		case stringKind:
-			m.match = av.String() == ev.String()
-		case uintKind:
-			m.match = av.Uint() == ev.Uint()
-		default:
-			m.t.Error(errBadType)
-		}
+		m.match = reflect.DeepEqual(m.actual, expected)
 	}
 
 	if !m.match {
@@ -283,6 +268,7 @@ const (
 	floatKind
 	stringKind
 	uintKind
+	sliceKind
 )
 
 // basicKind simplifies the type down to the particular class to which it belongs.
@@ -300,6 +286,8 @@ func basicKind(v reflect.Value) (kind, error) {
 		return complexKind, nil
 	case reflect.String:
 		return stringKind, nil
+	case reflect.Slice:
+		return sliceKind, nil
 	}
 	return invalidKind, errBadComparisonType
 }
