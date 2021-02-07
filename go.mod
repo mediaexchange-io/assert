@@ -1,3 +1,3 @@
-module github.com/MediaExchange/assert
+module github.com/mediaexchange-io/assert
 
-go 1.14
+go 1.15

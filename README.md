@@ -31,7 +31,7 @@ func TestAbs(t *testing.T) {
 With the matchers included in our `assert` package, one would write:
 
 ```go
-import "github.com/MediaExchange/assert"
+import "github.com/mediaexchange-io/assert"
 
 func TestAbs(t *testing.T) {
     got := Abs(-1)
@@ -142,7 +142,7 @@ The matchers currently included in the `assert` package are:
 
 ## Maintainers
 
-* [Media Exchange](http://github.com/MediaExchange/)
+* [Media Exchange](http://github.com/mediaexchange-io/)
 
 ## License
 
