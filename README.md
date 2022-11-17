@@ -1,6 +1,6 @@
-[![GoDoc](https://godoc.org/github.com/mediaexchange/assert/github?status.svg)](https://godoc.org/github.com/mediaexchange/assert)
+[![GoDoc](https://godoc.org/github.com/mediaexchange-io/assert/github?status.svg)](https://godoc.org/github.com/mediaexchange-io/assert)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Go version](https://img.shields.io/badge/go-~%3E1.15-green.svg)](https://golang.org/doc/devel/release.html#go1.15)
+[![Go version](https://img.shields.io/badge/go-~%3E1.19-green.svg)](https://golang.org/doc/devel/release.html#go1.19)
 
 # assert
 
