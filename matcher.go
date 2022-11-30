@@ -10,14 +10,14 @@ import (
 )
 
 var (
-	errorInterface  = reflect.TypeOf((*error)(nil)).Elem()
+	errorInterface = reflect.TypeOf((*error)(nil)).Elem()
 )
 
 // Matcher hold the current state of the assertion.
 type Matcher struct {
-	t		*testing.T
-	actual	interface{}
-	match	bool
+	t      *testing.T
+	actual interface{}
+	match  bool
 }
 
 // With creates a new Matcher with the current test reporter.
@@ -125,7 +125,16 @@ func (m *Matcher) IsEqualTo(expected interface{}) *Matcher {
 			return m
 		}
 
-		m.match = reflect.DeepEqual(m.actual, expected)
+		// reflect.DeepEqual used to work with integral types, but no longer does. This requires a
+		// separate comparison. A bug has been raised due to the change in behavior:
+		// https://github.com/golang/go/issues/56991
+		if ak == intKind {
+			m.match = av.Int() == ev.Int()
+		} else if ak == uintKind {
+			m.match = av.Uint() == ev.Uint()
+		} else {
+			m.match = reflect.DeepEqual(m.actual, expected)
+		}
 	}
 
 	if !m.match {
@@ -240,9 +249,9 @@ func testLine() string {
 	}
 
 	if index := strings.LastIndex(line, "/"); index >= 0 {
-		line = line[index + 1:len]
+		line = line[index+1 : len]
 	} else if index := strings.LastIndex(line, "\\"); index >= 0 {
-		line = line[index + 1:len]
+		line = line[index+1 : len]
 	}
 
 	return line
@@ -253,13 +262,14 @@ func testLine() string {
 
 // Errors returned when comparisons go bad.
 var (
-	errBadComparisonType    = errors.New("invalid type for comparison")
-	errBadComparison        = errors.New("incompatible types for comparison")
-	errBadType              = errors.New("invalid type")
+	errBadComparisonType = errors.New("invalid type for comparison")
+	errBadComparison     = errors.New("incompatible types for comparison")
+	errBadType           = errors.New("invalid type")
 )
 
 // These are the basic types, distilled from the variety of more specific types.
 type kind int
+
 const (
 	invalidKind kind = iota
 	boolKind

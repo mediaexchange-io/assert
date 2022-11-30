@@ -255,7 +255,6 @@ func TestMatcher_IsEqualTo_WithNil(t *testing.T) {
 	}
 }
 
-
 func TestMatcher_IsEqualTo_WithBool(t *testing.T) {
 	assert := With(t).That(true).IsEqualTo(true)
 
@@ -296,7 +295,7 @@ func TestMatcher_IsEqualTo_WithFloat(t *testing.T) {
 }
 
 func TestMatcher_IsEqualTo_WithInt(t *testing.T) {
-	assert := With(t).That(-1073741824).IsEqualTo(-1073741824)
+	assert := With(t).That(int64(-128)).IsEqualTo(-128)
 
 	if assert == nil {
 		t.Error("IsEqualTo returned nil")
