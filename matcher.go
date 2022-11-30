@@ -16,7 +16,7 @@ var (
 // Matcher hold the current state of the assertion.
 type Matcher struct {
 	t      *testing.T
-	actual interface{}
+	actual any
 	match  bool
 }
 
@@ -28,7 +28,7 @@ func With(t *testing.T) *Matcher {
 }
 
 // That specifies the actual value under test.
-func (m *Matcher) That(actual interface{}) *Matcher {
+func (m *Matcher) That(actual any) *Matcher {
 	if m.t == nil {
 		panic("Use With(*testing.T) to initialize Matcher")
 	}
@@ -93,7 +93,7 @@ func (m *Matcher) IsOk() *Matcher {
 
 // IsEqualTo verifies that the actual value capture in `That()` is equal to the
 // expected value.
-func (m *Matcher) IsEqualTo(expected interface{}) *Matcher {
+func (m *Matcher) IsEqualTo(expected any) *Matcher {
 	m.match = false
 	av := reflect.ValueOf(m.actual)
 	ev := reflect.ValueOf(expected)
@@ -125,9 +125,6 @@ func (m *Matcher) IsEqualTo(expected interface{}) *Matcher {
 			return m
 		}
 
-		// reflect.DeepEqual used to work with integral types, but no longer does. This requires a
-		// separate comparison. A bug has been raised due to the change in behavior:
-		// https://github.com/golang/go/issues/56991
 		if ak == intKind {
 			m.match = av.Int() == ev.Int()
 		} else if ak == uintKind {
@@ -145,7 +142,7 @@ func (m *Matcher) IsEqualTo(expected interface{}) *Matcher {
 }
 
 // IsGreaterThan matches if the actual value is greater than the expected value.
-func (m *Matcher) IsGreaterThan(expected interface{}) *Matcher {
+func (m *Matcher) IsGreaterThan(expected any) *Matcher {
 	k, err := typeCheck(m.actual, expected)
 	if err != nil {
 		m.match = false
@@ -173,7 +170,7 @@ func (m *Matcher) IsGreaterThan(expected interface{}) *Matcher {
 	return m
 }
 
-func typeCheck(actual interface{}, expected interface{}) (kind, error) {
+func typeCheck(actual any, expected any) (kind, error) {
 	if reflect.TypeOf(actual) == nil {
 		return invalidKind, errors.New("Actual value was nil")
 	}
